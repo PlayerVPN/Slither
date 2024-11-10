@@ -1,14 +1,26 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const socket = io();
-
-// Resize canvas
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+let nickname = '';
+let snakeColor = 'green'; // Default snake color
 let player = { x: 100, y: 100, size: 10, body: [{ x: 100, y: 100 }], id: null };
 let food = [];
 let keys = {};
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function startGame() {
+    nickname = document.getElementById("nicknameInput").value;
+    if (nickname.trim() === '') {
+        alert("Please enter a nickname!");
+        return;
+    }
+
+    document.querySelector(".container").style.display = 'none';  // Hide the homepage
+    socket.emit('newPlayer', nickname);  // Emit the nickname to the server
+    gameLoop();
+}
 
 // Controls
 window.addEventListener('keydown', (e) => { keys[e.code] = true; });
@@ -48,7 +60,7 @@ function updateGame() {
     });
 
     // Send player's updated position to the server
-    socket.emit('move', { x: player.x, y: player.y, body: player.body, size: player.size });
+    socket.emit('move', { x: player.x, y: player.y, body: player.body, size: player.size, color: snakeColor });
 }
 
 // Draw the game state
@@ -56,7 +68,7 @@ function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the snake
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = snakeColor;
     player.body.forEach(segment => {
         ctx.fillRect(segment.x, segment.y, 10, 10);
     });
@@ -80,18 +92,17 @@ spawnFood();
 
 // Listen for updates from the server (other players' positions)
 socket.on('gameState', (players) => {
-    // Clear the canvas for the next frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw other players
     for (const playerId in players) {
         const p = players[playerId];
-        ctx.fillStyle = p.id === socket.id ? 'green' : 'blue';  // Current player is green
+        ctx.fillStyle = p.color;
         p.body.forEach(segment => {
             ctx.fillRect(segment.x, segment.y, 10, 10);
         });
     }
 });
 
-// Start the game loop
-gameLoop();
+// Home page input (showing the nickname input)
+document.getElementById('nicknameInput').focus();
