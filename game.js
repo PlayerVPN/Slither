@@ -26,7 +26,6 @@ canvas.height = window.innerHeight;
 
 function setSnakeColor(color) {
     snakeColor = color;
-    console.log(`Snake color set to: ${snakeColor}`);
 }
 
 function startGame() {
@@ -35,8 +34,9 @@ function startGame() {
         alert('Please enter a nickname');
         return;
     }
-    socket.emit('newPlayer', { nickname, snakeColor });
-    document.querySelector('body').style.display = 'none';  // Hide the home screen
+    socket.emit('joinPublicGame', { nickname, snakeColor });
+    document.querySelector('.container').style.display = 'none';
+    canvas.style.display = 'block';
     gameLoop = setInterval(updateGame, 1000 / 60);
 }
 
@@ -68,12 +68,9 @@ function drawSnake() {
 }
 
 function checkCollisions() {
-    // Check for collisions with walls
     if (player.x < 0 || player.x > canvas.width || player.y < 0 || player.y > canvas.height) {
         gameOver();
     }
-
-    // Check for collisions with own body
     for (let i = 1; i < player.body.length; i++) {
         if (player.body[i].x === player.x && player.body[i].y === player.y) {
             gameOver();
@@ -81,44 +78,13 @@ function checkCollisions() {
     }
 }
 
-function spawnFood() {
-    // Food logic here (randomly spawn food on the canvas)
-}
+function spawnFood() {}
 
-function checkPowerUpCollision() {
-    powerUps.forEach((pup, index) => {
-        if (Math.abs(pup.x - player.x) < 10 && Math.abs(pup.y - player.y) < 10) {
-            if (pup.type === 'speed') {
-                speedBoost = true;
-                setTimeout(() => speedBoost = false, powerUpDuration);
-            }
-            if (pup.type === 'invincible') {
-                isInvincible = true;
-                setTimeout(() => isInvincible = false, powerUpDuration);
-            }
-            powerUps.splice(index, 1);  // Remove the power-up after collision
-            spawnPowerUp();  // Spawn a new power-up
-        }
-    });
-}
-
-function spawnPowerUp() {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height;
-    const type = Math.random() < 0.5 ? 'speed' : 'invincible';
-    powerUps.push({ x, y, type });
-}
+function checkPowerUpCollision() {}
 
 function gameOver() {
     clearInterval(gameLoop);
-    const gameOverScreen = `
-        <div class="game-over">
-            <h1>Game Over</h1>
-            <p>Your final score: ${player.size}</p>
-            <button onclick="restartGame()">Restart</button>
-        </div>
-    `;
-    document.body.innerHTML = gameOverScreen;
+    document.body.innerHTML = `<div class="game-over"><h1>Game Over</h1><button onclick="restartGame()">Restart</button></div>`;
 }
 
 function restartGame() {
@@ -133,19 +99,8 @@ function updateLeaderboard() {
     });
 }
 
-document.addEventListener('keydown', (e) => {
-    keys[e.key] = true;
-});
+document.addEventListener('keydown', (e) => keys[e.key] = true);
+document.addEventListener('keyup', (e) => keys[e.key] = false);
 
-document.addEventListener('keyup', (e) => {
-    keys[e.key] = false;
-});
-
-// WebSocket listeners for multiplayer
-socket.on('updatePlayer', (newPlayerData) => {
-    player = newPlayerData;
-});
-
-socket.on('gameOver', () => {
-    gameOver();
-});
+socket.on('updatePlayer', (newPlayerData) => player = newPlayerData);
+socket.on('gameOver', () => gameOver());
