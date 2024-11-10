@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slither2.0</title>
     <style>
-        body { margin: 0; background-color: #111; font-family: Arial, sans-serif; color: white; }
-        canvas { display: block; }
-        .container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-        .logo { font-size: 40px; font-weight: bold; }
-        .game-title { font-size: 30px; margin-top: 20px; }
-        .input { margin-top: 20px; padding: 10px; font-size: 18px; border-radius: 10px; border: none; background-color: #444; color: white; width: 200px; }
-        .button { margin-top: 10px; padding: 10px; font-size: 18px; background-color: #ff3333; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #111; color: white; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { text-align: center; }
+        .logo { font-size: 50px; font-weight: bold; color: #ff33cc; animation: bounce 1s infinite; }
+        .game-title { font-size: 36px; margin-top: 20px; color: white; }
+        .input { margin-top: 20px; padding: 15px; font-size: 20px; border-radius: 10px; border: none; background-color: #444; color: white; width: 250px; }
+        .button { margin-top: 20px; padding: 15px 30px; font-size: 20px; background-color: #ff3333; color: white; border: none; border-radius: 10px; cursor: pointer; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #e60000; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="logo">Slither2.0</div>
         <div class="game-title">Welcome to Slither2.0</div>
@@ -23,9 +26,7 @@
         <br/>
         <button class="button" onclick="startGame()">Start Game</button>
     </div>
-
     <canvas id="gameCanvas"></canvas>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script src="game.js"></script>
 </body>
