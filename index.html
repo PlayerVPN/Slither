@@ -3,14 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slither.io</title>
+    <title>Slither2.0</title>
     <style>
-        body { margin: 0; overflow: hidden; }
+        body { margin: 0; background-color: #111; font-family: Arial, sans-serif; color: white; }
         canvas { display: block; }
+        .container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .logo { font-size: 40px; font-weight: bold; }
+        .game-title { font-size: 30px; margin-top: 20px; }
+        .input { margin-top: 20px; padding: 10px; font-size: 18px; border-radius: 10px; border: none; background-color: #444; color: white; width: 200px; }
+        .button { margin-top: 10px; padding: 10px; font-size: 18px; background-color: #ff3333; color: white; border: none; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
+
+    <div class="container">
+        <div class="logo">Slither2.0</div>
+        <div class="game-title">Welcome to Slither2.0</div>
+        <input id="nicknameInput" class="input" type="text" placeholder="Enter your nickname" />
+        <br/>
+        <button class="button" onclick="startGame()">Start Game</button>
+    </div>
+
     <canvas id="gameCanvas"></canvas>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script src="game.js"></script>
 </body>
