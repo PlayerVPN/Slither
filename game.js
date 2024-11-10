@@ -10,13 +10,15 @@ let keys = {};
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Game Variables
+let speed = 5; // Snake speed
+
 function startGame() {
     nickname = document.getElementById("nicknameInput").value;
     if (nickname.trim() === '') {
         alert("Please enter a nickname!");
         return;
     }
-
     document.querySelector(".container").style.display = 'none';  // Hide the homepage
     socket.emit('newPlayer', nickname);  // Emit the nickname to the server
     gameLoop();
@@ -35,10 +37,10 @@ function gameLoop() {
 
 // Update player state
 function updateGame() {
-    if (keys['ArrowUp']) player.y -= 5;
-    if (keys['ArrowDown']) player.y += 5;
-    if (keys['ArrowLeft']) player.x -= 5;
-    if (keys['ArrowRight']) player.x += 5;
+    if (keys['ArrowUp']) player.y -= speed;
+    if (keys['ArrowDown']) player.y += speed;
+    if (keys['ArrowLeft']) player.x -= speed;
+    if (keys['ArrowRight']) player.x += speed;
 
     // Keep the snake within the screen bounds
     if (player.x < 0) player.x = canvas.width;
