@@ -51,6 +51,7 @@ io.on('connection', (socket) => {
     });
 });
 
+// Start server
 server.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+    console.log('Server started on http://localhost:3000');
 });
