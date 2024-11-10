@@ -9,6 +9,9 @@ const io = socketIo(server);
 let players = {};
 let food = [];
 
+// Serve static files (for the frontend)
+app.use(express.static('public'));
+
 // Create random food on the map
 function createFood() {
     const x = Math.random() * 800;
@@ -18,15 +21,14 @@ function createFood() {
 
 createFood(); // Initial food spawn
 
-// Serve static files (for the frontend)
-app.use(express.static('public'));
-
 // Handle new player connection
 io.on('connection', (socket) => {
     console.log('A player connected: ' + socket.id);
 
-    // Initialize player data
-    players[socket.id] = { x: 100, y: 100, size: 10, body: [{ x: 100, y: 100 }], id: socket.id };
+    // Handle new player joining
+    socket.on('newPlayer', (nickname) => {
+        players[socket.id] = { x: 100, y: 100, size: 10, body: [{ x: 100, y: 100 }], id: socket.id, color: 'green', nickname };
+    });
 
     // Handle player movement
     socket.on('move', (data) => {
@@ -34,6 +36,7 @@ io.on('connection', (socket) => {
         players[socket.id].y = data.y;
         players[socket.id].body = data.body;
         players[socket.id].size = data.size;
+        players[socket.id].color = data.color;
     });
 
     // Send game state to all clients every frame
