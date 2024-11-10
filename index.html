@@ -12,6 +12,8 @@
         .input { margin-top: 20px; padding: 15px; font-size: 20px; border-radius: 10px; border: none; background-color: #444; color: white; width: 250px; }
         .button { margin-top: 20px; padding: 15px 30px; font-size: 20px; background-color: #ff3333; color: white; border: none; border-radius: 10px; cursor: pointer; transition: background-color 0.3s ease; }
         .button:hover { background-color: #e60000; }
+        .skin-picker { margin-top: 20px; }
+        .skin { width: 30px; height: 30px; border-radius: 50%; margin: 5px; cursor: pointer; }
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
@@ -23,6 +25,16 @@
         <div class="logo">Slither2.0</div>
         <div class="game-title">Welcome to Slither2.0</div>
         <input id="nicknameInput" class="input" type="text" placeholder="Enter your nickname" />
+        
+        <div class="skin-picker">
+            <span>Select Snake Skin:</span><br>
+            <div class="skin" style="background-color: #ff3333;" onclick="setSnakeColor('#ff3333')"></div>
+            <div class="skin" style="background-color: #33ff33;" onclick="setSnakeColor('#33ff33')"></div>
+            <div class="skin" style="background-color: #3333ff;" onclick="setSnakeColor('#3333ff')"></div>
+            <div class="skin" style="background-color: #3333ff;" onclick="setSnakeColor('#000000')"></div>
+            <div class="skin" style="background-color: #3333ff;" onclick="setSnakeColor('ffffff')"></div>
+        </div>
+
         <br/>
         <button class="button" onclick="startGame()">Start Game</button>
     </div>
