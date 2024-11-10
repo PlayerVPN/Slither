@@ -13,7 +13,7 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('A player connected: ' + socket.id);
 
-    socket.on('newPlayer', (data) => {
+    socket.on('joinPublicGame', (data) => {
         const newPlayer = {
             id: socket.id,
             nickname: data.nickname,
